@@ -1,12 +1,12 @@
 import { StyleSheet, PixelRatio } from 'react-native'
 import { getHeightPercent } from './ratio'
-import * as colors from './../../../../../assets/styles/color';
-import * as globals from './../../../../../lib/globals';
+// import * as colors from './../../../../../assets/styles/color';
+// import * as globals from './../../../../../lib/globals';
 
 export default StyleSheet.create({
   container: {},
   modalContainer: {
-    backgroundColor: colors.white,
+    // backgroundColor: colors.white,
     flex: 1
   },
   contentContainer: {
@@ -33,11 +33,11 @@ export default StyleSheet.create({
   },
   headerTitle:{
     alignSelf:'center', 
-    fontSize: globals.font_16, 
-    color: colors.white,
+    // fontSize: globals.font_16, 
+    // color: colors.white,
     fontWeight:'500',
     marginLeft:-15,
-    fontFamily: globals.fontSFProTextRegular
+    // fontFamily: globals.fontSFProTextRegular
   },
   imgStyle: {
     resizeMode: 'contain',
@@ -85,13 +85,13 @@ export default StyleSheet.create({
   },
   letters: {
     marginRight: 10,
-    marginTop:(globals.iPhoneX) ? 12 : 6,
+    // marginTop:(globals.iPhoneX) ? 12 : 6,
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center'
   },
   letter: {
-    height: (globals.iPhoneX) ? 25 : 20,
+    // height: (globals.iPhoneX) ? 25 : 20,
     width: 20,
     // marginTop: 2,
     justifyContent: 'center',

@@ -17,11 +17,11 @@ import {
   ScrollView,
   Platform
 } from 'react-native'
-import * as colors from './../../../../../assets/styles/color';
-import * as globals from './../../../../../lib/globals';
+// import * as colors from './../../../../../assets/styles/color';
+// import * as globals from './../../../../../lib/globals';
 
 import Fuse from 'fuse.js'
-import Register from '../../register'
+// import Register from '../../register'
 import cca2List from '../data/cca2.json'
 import { getHeightPercent } from './ratio'
 import CloseButton from './CloseButton'
@@ -31,7 +31,7 @@ import KeyboardAvoidingView from './KeyboardAvoidingView'
 let countries = null
 let Emoji = null
 let styles = {}
-let defaulCountry = globals.globalVars.currentCountryCode;
+// let defaulCountry = globals.globalVars.currentCountryCode;
 
 let isEmojiable = Platform.OS === 'ios'
 var _this = null;
@@ -41,7 +41,7 @@ const FLAG_TYPES = {
 }
 
 const setCountries = flagType => {
-  console.log("defaulCountry---> "+globals.globalVars.currentCountryCode);
+  // console.log("defaulCountry---> "+globals.globalVars.currentCountryCode);
   
   if (typeof flagType !== 'undefined') {
     isEmojiable = flagType === FLAG_TYPES.emoji
@@ -51,7 +51,7 @@ const setCountries = flagType => {
     countries = require('../data/countries-emoji.json')
     Emoji = require('./emoji').default
     // let sds =countries.IN;
-    console.log("isEmojiable---> one" + JSON.stringify(countries[globals.globalVars.currentCountryCode]));
+    // console.log("isEmojiable---> one" + JSON.stringify(countries[globals.globalVars.currentCountryCode]));
     
   } else {
     countries = require('../data/countries.json')
@@ -92,7 +92,10 @@ export default class CountryPicker extends Component {
     hideAlphabetFilter: PropTypes.bool,
     renderFilter: PropTypes.func,
     showCallingCode: PropTypes.bool,
-    filterOptions: PropTypes.object
+    filterOptions: PropTypes.object,
+    colors: PropTypes.object,
+    globals: PropTypes.object,
+    closeAgreement: PropTypes.func,
   }
 
   static defaultProps = {
@@ -216,13 +219,17 @@ export default class CountryPicker extends Component {
   }
 
   onSelectCountry(cca2) {
+    const { closeAgreement } = this.props;
+
     this.setState({
       modalVisible: false,
       filter: '',
       dataSource: ds.cloneWithRows(this.state.cca2List)
     })
-    Register.closeAgreement()
     
+    if (closeAgreement && typeof closeAgreement === 'function') {
+      closeAgreement();
+    }
     
     this.props.onChange({
       cca2,
@@ -327,13 +334,15 @@ export default class CountryPicker extends Component {
   }
 
   renderLetters(letter, index) {
+    const { globals } = this.props;
+
     return (
       <TouchableOpacity
         key={index}
         onPress={() => this.scrollTo(letter)}
         activeOpacity={0.6}
       >
-        <View style={styles.letter}>
+        <View style={[styles.letter, { height: (globals.iPhoneX) ? 25 : 20 }]}>
           <Text style={styles.letterText} allowFontScaling={false}>
             {letter}
           </Text>
@@ -391,6 +400,8 @@ export default class CountryPicker extends Component {
    console.log('sdasdasdasdasdasdads')
   }
   render() {
+    const { colors, globals } = this.props;
+
     return (
       <View style={styles.container}>
         <TouchableOpacity
@@ -425,7 +436,7 @@ export default class CountryPicker extends Component {
                   <Ionicons style={{ paddingLeft: 20, paddingTop: 10, paddingBottom: 10, }} name="ios-arrow-back" size={30} color={colors.white} />
                 </TouchableOpacity>
                 <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-                  <Text style={[styles.headerTitle, { color: colors.white,paddingTop: 10, paddingBottom: 10, }]}>{'Countries'}</Text>
+                  <Text style={[styles.headerTitle, { color: colors.white,paddingTop: 10, paddingBottom: 10, fontSize: globals.font_16, fontFamily: globals.fontSFProTextRegular, color: colors.white, }]}>{'Countries'}</Text>
                 </View>
                 <View style={{ justifyContent: 'center', flex: 1 }}></View>
 
@@ -455,7 +466,7 @@ export default class CountryPicker extends Component {
                 />
                 {!this.props.hideAlphabetFilter && (
                   <ScrollView
-                    contentContainerStyle={styles.letters}
+                    contentContainerStyle={[styles.letters, { marginTop:(globals.iPhoneX) ? 12 : 6, }]}
                     keyboardShouldPersistTaps="always"
                     bounces={false}
                   >
